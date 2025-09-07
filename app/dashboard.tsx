@@ -41,9 +41,9 @@ export default function WhatsAppDashboard() {
   useEffect(() => {
     fetch("http://localhost:9000/chats/all")
       .then((res) => res.json())
-      .then((data) => {
+      .then((data) => { 
         console.log(data); // Debug API response shape
-        const mapped = (Array.isArray(data.employees) ? data.employees : []).map((emp: any) => {
+        const mapped = (Array.isArray(data.employees) ? data.employees : []).map((emp: string | { name: string; lastMessage?: string; lastTimestamp?: string; avatar?: string; online?: boolean; }) => {
           if (typeof emp === "string") {
             return {
               name: emp,
@@ -73,7 +73,7 @@ export default function WhatsAppDashboard() {
       fetch(`http://localhost:9000/chats/${selectedEmployee}`)
         .then((res) => res.json())
         .then((data) => {
-          const msgs: Message[] = (data.messages || []).map((m: any) => ({
+          const msgs: Message[] = (data.messages || []).map((m: { sender: string; text: string; timestamp: string; type?: string; document?: string; }) => ({
             sender: m.sender,
             text: m.text,
             timestamp: typeof m.timestamp === "string" ? m.timestamp : new Date().toISOString(),
