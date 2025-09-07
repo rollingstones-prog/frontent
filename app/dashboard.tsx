@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { Search, Send, Paperclip, Smile, Moon, Sun, Circle } from "lucide-react";
+import Image from 'next/image';
 
 interface Message {
   sender: "Employee" | "Agent" | "Boss";
@@ -140,13 +141,13 @@ export default function WhatsAppDashboard() {
   };
 
   return (
-    <div className={`flex h-screen ${darkMode ? "dark" : ""}`}> 
+    <div className={`flex flex-col h-screen ${darkMode ? "dark" : ""}`}> 
       {/* Sidebar */}
-      <div className="w-80 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 flex flex-col"> 
+      <div className="w-full md:w-80 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 flex flex-col"> 
         {/* Sidebar Header */}
-        <div className="p-4 bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700"> 
-          <div className="flex items-center justify-between mb-4"> 
-            <h1 className="text-xl font-semibold text-gray-900 dark:text-white"> 
+        <div className="p-2 md:p-4 bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700"> 
+          <div className="flex items-center justify-between mb-2 md:mb-4"> 
+            <h1 className="text-sm md:text-xl font-semibold text-gray-900 dark:text-white"> 
               Chats 
             </h1> 
             <button 
@@ -180,7 +181,7 @@ export default function WhatsAppDashboard() {
             <div 
               key={employee.name} 
               onClick={() => setSelectedEmployee(employee.name)} 
-              className={`flex items-center p-4 cursor-pointer border-b border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors ${ 
+              className={`flex items-center p-2 md:p-4 cursor-pointer border-b border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors ${ 
                 selectedEmployee === employee.name 
                   ? 'bg-green-50 dark:bg-green-900/20 border-r-2 border-r-green-500' 
                   : '' 
@@ -188,9 +189,11 @@ export default function WhatsAppDashboard() {
             > 
               {/* Avatar */} 
               <div className="relative mr-3"> 
-                <img 
+                <Image 
                   src={employee.avatar} 
                   alt={employee.name} 
+                  width={48} 
+                  height={48} 
                   className="w-12 h-12 rounded-full object-cover" 
                 /> 
                 {employee.online && ( 
@@ -201,14 +204,14 @@ export default function WhatsAppDashboard() {
               {/* Employee Info */} 
               <div className="flex-1 min-w-0"> 
                 <div className="flex items-center justify-between"> 
-                  <h3 className="font-medium text-gray-900 dark:text-white truncate"> 
+                  <h3 className="text-sm md:text-base font-medium text-gray-900 dark:text-white truncate"> 
                     {employee.name} 
                   </h3> 
                   <span className="text-xs text-gray-500 dark:text-gray-400"> 
                     {formatTimestamp(employee.lastTimestamp)} 
                   </span> 
                 </div> 
-                <p className="text-sm text-gray-600 dark:text-gray-400 truncate"> 
+                <p className="text-xs md:text-sm text-gray-600 dark:text-gray-400 truncate"> 
                   {employee.lastMessage} 
                 </p> 
               </div> 
@@ -222,18 +225,20 @@ export default function WhatsAppDashboard() {
         {selectedEmployee ? ( 
           <> 
             {/* Chat Header */} 
-            <div className="p-4 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 shadow-sm"> 
+            <div className="p-2 md:p-4 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 shadow-sm"> 
               <div className="flex items-center"> 
-                <img 
-                  src={employees.find(e => e.name === selectedEmployee)?.avatar} 
+                <Image 
+                  src={employees.find(e => e.name === selectedEmployee)?.avatar || "https://ui-avatars.com/api/?name=Unknown"} 
                   alt={selectedEmployee} 
+                  width={40} 
+                  height={40} 
                   className="w-10 h-10 rounded-full object-cover mr-3" 
                 /> 
                 <div> 
-                  <h2 className="font-semibold text-gray-900 dark:text-white"> 
+                  <h2 className="text-sm md:text-base font-semibold text-gray-900 dark:text-white"> 
                     {selectedEmployee} 
                   </h2> 
-                  <p className="text-sm text-green-600 dark:text-green-400"> 
+                  <p className="text-xs md:text-sm text-green-600 dark:text-green-400"> 
                     {employees.find(e => e.name === selectedEmployee)?.online ? 'Online' : 'Last seen recently'} 
                   </p> 
                 </div> 
@@ -242,7 +247,7 @@ export default function WhatsAppDashboard() {
 
             {/* Boss Instructions (Pinned) */} 
             {bossInstructions.length > 0 && ( 
-              <div className="bg-blue-50 dark:bg-blue-900/20 border-b border-blue-200 dark:border-blue-800 p-3"> 
+              <div className="bg-blue-50 dark:bg-blue-900/20 border-b border-blue-200 dark:border-blue-800 p-2 md:p-3"> 
                 <div className="flex items-start"> 
                   <div className="bg-blue-100 dark:bg-blue-800 p-2 rounded-full mr-3"> 
                     <Circle className="w-4 h-4 text-blue-600 dark:text-blue-400 fill-current" /> 
@@ -252,7 +257,7 @@ export default function WhatsAppDashboard() {
                       Boss Instructions 
                     </h4> 
                     {bossInstructions.map((instruction, index) => ( 
-                      <p key={index} className="text-sm text-blue-800 dark:text-blue-200"> 
+                      <p key={index} className="text-xs md:text-sm text-blue-800 dark:text-blue-200"> 
                         {instruction.text} 
                       </p> 
                     ))} 
@@ -262,7 +267,7 @@ export default function WhatsAppDashboard() {
             )} 
 
             {/* Messages */} 
-            <div className="flex-1 overflow-y-auto p-4 space-y-4"> 
+            <div className="flex-1 overflow-y-auto p-2 md:p-4 space-y-2"> 
               {messages.filter(m => m.sender !== "Boss").map((message, index) => ( 
                 <div 
                   key={index} 
@@ -278,10 +283,10 @@ export default function WhatsAppDashboard() {
                     {message.type === 'document' ? ( 
                       <div className="flex items-center space-x-2"> 
                         <Paperclip className="w-4 h-4" /> 
-                        <span className="text-sm font-medium">{message.document}</span> 
+                        <span className="text-xs md:text-sm font-medium">{message.document}</span> 
                       </div> 
                     ) : ( 
-                      <p className="text-sm">{message.text}</p> 
+                      <p className="text-xs md:text-sm">{message.text}</p> 
                     )} 
                     <div className={`text-xs mt-1 ${ 
                       message.sender === 'Agent' ? 'text-green-100' : 'text-gray-500 dark:text-gray-400' 
@@ -294,7 +299,7 @@ export default function WhatsAppDashboard() {
             </div> 
 
             {/* Message Input */} 
-            <div className="p-4 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700"> 
+            <div className="p-2 md:p-4 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700"> 
               <div className="flex items-center space-x-2"> 
                 <button className="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors"> 
                   <Paperclip className="w-5 h-5" /> 
